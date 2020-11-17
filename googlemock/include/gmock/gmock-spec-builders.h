@@ -61,13 +61,11 @@
 #ifndef GMOCK_INCLUDE_GMOCK_GMOCK_SPEC_BUILDERS_H_
 #define GMOCK_INCLUDE_GMOCK_GMOCK_SPEC_BUILDERS_H_
 
-#include <functional>
 #include <map>
 #include <memory>
 #include <set>
 #include <sstream>
 #include <string>
-#include <type_traits>
 #include <utility>
 #include <vector>
 #include "gmock/gmock-actions.h"
@@ -188,6 +186,7 @@ class GTEST_API_ UntypedFunctionMockerBase {
   // this information in the global mock registry.  Will be called
   // whenever an EXPECT_CALL() or ON_CALL() is executed on this mock
   // method.
+  // FIXME: rename to SetAndRegisterOwner().
   void RegisterOwner(const void* mock_obj)
       GTEST_LOCK_EXCLUDED_(g_gmock_mutex);
 
@@ -303,9 +302,11 @@ class OnCallSpec : public UntypedOnCallSpecBase {
       : UntypedOnCallSpecBase(a_file, a_line),
         matchers_(matchers),
         // By default, extra_matcher_ should match anything.  However,
-        // we cannot initialize it with _ as that causes ambiguity between
-        // Matcher's copy and move constructor for some argument types.
-        extra_matcher_(A<const ArgumentTuple&>()) {}
+        // we cannot initialize it with _ as that triggers a compiler
+        // bug in Symbian's C++ compiler (cannot decide between two
+        // overloaded constructors of Matcher<const ArgumentTuple&>).
+        extra_matcher_(A<const ArgumentTuple&>()) {
+  }
 
   // Implements the .With() clause.
   OnCallSpec& With(const Matcher<const ArgumentTuple&>& m) {
@@ -332,7 +333,7 @@ class OnCallSpec : public UntypedOnCallSpecBase {
     return *this;
   }
 
-  // Returns true if and only if the given arguments match the matchers.
+  // Returns true iff the given arguments match the matchers.
   bool Matches(const ArgumentTuple& args) const {
     return TupleMatches(matchers_, args) && extra_matcher_.Matches(args);
   }
@@ -390,7 +391,7 @@ class GTEST_API_ Mock {
       GTEST_LOCK_EXCLUDED_(internal::g_gmock_mutex);
 
   // Verifies all expectations on the given mock object and clears its
-  // default actions and expectations.  Returns true if and only if the
+  // default actions and expectations.  Returns true iff the
   // verification was successful.
   static bool VerifyAndClear(void* mock_obj)
       GTEST_LOCK_EXCLUDED_(internal::g_gmock_mutex);
@@ -516,8 +517,7 @@ class GTEST_API_ Expectation {
   // The compiler-generated copy ctor and operator= work exactly as
   // intended, so we don't need to define our own.
 
-  // Returns true if and only if rhs references the same expectation as this
-  // object does.
+  // Returns true iff rhs references the same expectation as this object does.
   bool operator==(const Expectation& rhs) const {
     return expectation_base_ == rhs.expectation_base_;
   }
@@ -599,8 +599,8 @@ class ExpectationSet {
   // The compiler-generator ctor and operator= works exactly as
   // intended, so we don't need to define our own.
 
-  // Returns true if and only if rhs contains the same set of Expectation
-  // objects as this does.
+  // Returns true iff rhs contains the same set of Expectation objects
+  // as this does.
   bool operator==(const ExpectationSet& rhs) const {
     return expectations_ == rhs.expectations_;
   }
@@ -761,8 +761,8 @@ class GTEST_API_ ExpectationBase {
   // by the subclasses to implement the .Times() clause.
   void SpecifyCardinality(const Cardinality& cardinality);
 
-  // Returns true if and only if the user specified the cardinality
-  // explicitly using a .Times().
+  // Returns true iff the user specified the cardinality explicitly
+  // using a .Times().
   bool cardinality_specified() const { return cardinality_specified_; }
 
   // Sets the cardinality of this expectation spec.
@@ -778,7 +778,7 @@ class GTEST_API_ ExpectationBase {
   void RetireAllPreRequisites()
       GTEST_EXCLUSIVE_LOCK_REQUIRED_(g_gmock_mutex);
 
-  // Returns true if and only if this expectation is retired.
+  // Returns true iff this expectation is retired.
   bool is_retired() const
       GTEST_EXCLUSIVE_LOCK_REQUIRED_(g_gmock_mutex) {
     g_gmock_mutex.AssertHeld();
@@ -792,29 +792,28 @@ class GTEST_API_ ExpectationBase {
     retired_ = true;
   }
 
-  // Returns true if and only if this expectation is satisfied.
+  // Returns true iff this expectation is satisfied.
   bool IsSatisfied() const
       GTEST_EXCLUSIVE_LOCK_REQUIRED_(g_gmock_mutex) {
     g_gmock_mutex.AssertHeld();
     return cardinality().IsSatisfiedByCallCount(call_count_);
   }
 
-  // Returns true if and only if this expectation is saturated.
+  // Returns true iff this expectation is saturated.
   bool IsSaturated() const
       GTEST_EXCLUSIVE_LOCK_REQUIRED_(g_gmock_mutex) {
     g_gmock_mutex.AssertHeld();
     return cardinality().IsSaturatedByCallCount(call_count_);
   }
 
-  // Returns true if and only if this expectation is over-saturated.
+  // Returns true iff this expectation is over-saturated.
   bool IsOverSaturated() const
       GTEST_EXCLUSIVE_LOCK_REQUIRED_(g_gmock_mutex) {
     g_gmock_mutex.AssertHeld();
     return cardinality().IsOverSaturatedByCallCount(call_count_);
   }
 
-  // Returns true if and only if all pre-requisites of this expectation are
-  // satisfied.
+  // Returns true iff all pre-requisites of this expectation are satisfied.
   bool AllPrerequisitesAreSatisfied() const
       GTEST_EXCLUSIVE_LOCK_REQUIRED_(g_gmock_mutex);
 
@@ -857,7 +856,7 @@ class GTEST_API_ ExpectationBase {
   const char* file_;          // The file that contains the expectation.
   int line_;                  // The line number of the expectation.
   const std::string source_text_;  // The EXPECT_CALL(...) source text.
-  // True if and only if the cardinality is specified explicitly.
+  // True iff the cardinality is specified explicitly.
   bool cardinality_specified_;
   Cardinality cardinality_;            // The cardinality of the expectation.
   // The immediate pre-requisites (i.e. expectations that must be
@@ -871,7 +870,7 @@ class GTEST_API_ ExpectationBase {
   // This group of fields are the current state of the expectation,
   // and can change as the mock function is called.
   int call_count_;  // How many times this expectation has been invoked.
-  bool retired_;    // True if and only if this expectation has retired.
+  bool retired_;    // True iff this expectation has retired.
   UntypedActions untyped_actions_;
   bool extra_matcher_specified_;
   bool repeated_action_specified_;  // True if a WillRepeatedly() was specified.
@@ -898,8 +897,9 @@ class TypedExpectation : public ExpectationBase {
         owner_(owner),
         matchers_(m),
         // By default, extra_matcher_ should match anything.  However,
-        // we cannot initialize it with _ as that causes ambiguity between
-        // Matcher's copy and move constructor for some argument types.
+        // we cannot initialize it with _ as that triggers a compiler
+        // bug in Symbian's C++ compiler (cannot decide between two
+        // overloaded constructors of Matcher<const ArgumentTuple&>).
         extra_matcher_(A<const ArgumentTuple&>()),
         repeated_action_(DoDefault()) {}
 
@@ -1089,15 +1089,14 @@ class TypedExpectation : public ExpectationBase {
   // statement finishes and when the current thread holds
   // g_gmock_mutex.
 
-  // Returns true if and only if this expectation matches the given arguments.
+  // Returns true iff this expectation matches the given arguments.
   bool Matches(const ArgumentTuple& args) const
       GTEST_EXCLUSIVE_LOCK_REQUIRED_(g_gmock_mutex) {
     g_gmock_mutex.AssertHeld();
     return TupleMatches(matchers_, args) && extra_matcher_.Matches(args);
   }
 
-  // Returns true if and only if this expectation should handle the given
-  // arguments.
+  // Returns true iff this expectation should handle the given arguments.
   bool ShouldHandleArguments(const ArgumentTuple& args) const
       GTEST_EXCLUSIVE_LOCK_REQUIRED_(g_gmock_mutex) {
     g_gmock_mutex.AssertHeld();
@@ -1207,6 +1206,9 @@ class TypedExpectation : public ExpectationBase {
       mocker->DescribeDefaultActionTo(args, what);
       DescribeCallCountTo(why);
 
+      // FIXME: allow the user to control whether
+      // unexpected calls should fail immediately or continue using a
+      // flag --gmock_unexpected_calls_are_fatal.
       return nullptr;
     }
 
@@ -1323,8 +1325,8 @@ class ReferenceOrValueWrapper {
 
   // Provides nondestructive access to the underlying value/reference.
   // Always returns a const reference (more precisely,
-  // const std::add_lvalue_reference<T>::type). The behavior of calling this
-  // after calling Unwrap on the same object is unspecified.
+  // const RemoveReference<T>&). The behavior of calling this after
+  // calling Unwrap on the same object is unspecified.
   const T& Peek() const {
     return value_;
   }
@@ -1458,7 +1460,7 @@ template <typename F>
 class FunctionMocker;
 
 template <typename R, typename... Args>
-class FunctionMocker<R(Args...)> final : public UntypedFunctionMockerBase {
+class FunctionMocker<R(Args...)> : public UntypedFunctionMockerBase {
   using F = R(Args...);
 
  public:
@@ -1657,8 +1659,9 @@ class FunctionMocker<R(Args...)> final : public UntypedFunctionMockerBase {
     const OnCallSpec<F>* const spec = FindOnCallSpec(args);
 
     if (spec == nullptr) {
-      *os << (std::is_void<Result>::value ? "returning directly.\n"
-                                          : "returning default value.\n");
+      *os << (internal::type_equals<Result, void>::value ?
+              "returning directly.\n" :
+              "returning default value.\n");
     } else {
       *os << "taking default action specified at:\n"
           << FormatFileLocation(spec->file(), spec->line()) << "\n";
@@ -1873,7 +1876,7 @@ class MockFunction<R(Args...)> {
   }
 
  private:
-  internal::FunctionMocker<R(Args...)> mock_;
+  mutable internal::FunctionMocker<R(Args...)> mock_;
 };
 
 // The style guide prohibits "using" statements in a namespace scope
