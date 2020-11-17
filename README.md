@@ -1,3 +1,28 @@
+## googletest (eloquent) - 1.8.9000-5
+
+The packages in the `googletest` repository were released into the `eloquent` distro by running `/usr/bin/bloom-release -r eloquent googletest` on `Tue, 17 Nov 2020 18:28:31 -0000`
+
+These packages were released:
+- `gmock_vendor`
+- `gtest_vendor`
+
+Version of package(s) in repository `googletest`:
+
+- upstream repository: https://github.com/ament/googletest.git
+- release repository: https://github.com/ros-staging/googletest-release.git
+- rosdistro version: `1.8.9000-2`
+- old version: `1.8.9000-4`
+- new version: `1.8.9000-5`
+
+Versions of tools used:
+
+- bloom version: `0.9.1`
+- catkin_pkg version: `0.4.16`
+- rosdep version: `0.18.0`
+- rosdistro version: `0.8.0`
+- vcstools version: `0.1.42`
+
+
 ## googletest (eloquent) - 1.8.9000-4
 
 The packages in the `googletest` repository were released into the `eloquent` distro by running `/usr/bin/bloom-release -r eloquent googletest` on `Tue, 17 Nov 2020 18:22:43 -0000`
