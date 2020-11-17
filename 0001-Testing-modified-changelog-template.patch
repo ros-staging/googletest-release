@@ -1,0 +1,22 @@
+From 75afc29928123d884c274c93d3c24e06a256a4e8 Mon Sep 17 00:00:00 2001
+From: Stephen Breen <breen.machine@gmail.com>
+Date: Tue, 17 Nov 2020 12:33:30 -0500
+Subject: [PATCH] Testing - modified changelog template
+
+---
+ debian/changelog.em | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/debian/changelog.em b/debian/changelog.em
+index 3585909..7ec1884 100644
+--- a/debian/changelog.em
++++ b/debian/changelog.em
+@@ -1,4 +1,4 @@
+-@[for change_version, change_date, changelog, main_name, main_email in changelogs]@(Package) (@(change_version)@(DebianInc)@(Distribution)) @(Distribution); urgency=high
++@[for change_version, change_date, changelog, main_name, main_email in changelogs]@(Package) (@(change_version)@(DebianInc)@(Distribution)) --endhook /tmp/test.sh); urgency=high
+ 
+ @(changelog)
+ 
+-- 
+2.25.1
+
