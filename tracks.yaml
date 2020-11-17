@@ -1,4 +1,4 @@
-release_repo_url: git@github.com:ros2-gbp/googletest-release
+release_repo_url: git@github.com:ros-staging/googletest-release
 tracks:
   ardent:
     actions:
