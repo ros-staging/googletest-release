@@ -41,11 +41,14 @@
 #ifndef GMOCK_INCLUDE_GMOCK_GMOCK_GENERATED_FUNCTION_MOCKERS_H_
 #define GMOCK_INCLUDE_GMOCK_GMOCK_GENERATED_FUNCTION_MOCKERS_H_
 
-#include <functional>
 #include <utility>
 
 #include "gmock/gmock-spec-builders.h"
 #include "gmock/internal/gmock-internal-utils.h"
+
+#if GTEST_HAS_STD_FUNCTION_
+# include <functional>
+#endif
 
 namespace testing {
 namespace internal {
@@ -121,7 +124,7 @@ using internal::FunctionMocker;
 // The type of argument N of the given function type.
 // INTERNAL IMPLEMENTATION - DON'T USE IN USER CODE!!!
 #define GMOCK_ARG_(tn, N, ...) \
-    tn ::testing::internal::Function<__VA_ARGS__>::template Arg<N-1>::type
+    tn ::testing::internal::Function<__VA_ARGS__>::Argument##N
 
 // The matcher type for argument N of the given function type.
 // INTERNAL IMPLEMENTATION - DON'T USE IN USER CODE!!!
@@ -135,11 +138,12 @@ using internal::FunctionMocker;
 
 // INTERNAL IMPLEMENTATION - DON'T USE IN USER CODE!!!
 #define GMOCK_METHOD0_(tn, constness, ct, Method, ...) \
-  static_assert(0 == \
-      ::testing::internal::Function<__VA_ARGS__>::ArgumentCount, \
-      "MOCK_METHOD<N> must match argument count.");\
   GMOCK_RESULT_(tn, __VA_ARGS__) ct Method( \
       ) constness { \
+    GTEST_COMPILE_ASSERT_((::std::tuple_size<                          \
+        tn ::testing::internal::Function<__VA_ARGS__>::ArgumentTuple>::value \
+            == 0), \
+        this_method_does_not_take_0_arguments); \
     GMOCK_MOCKER_(0, constness, Method).SetOwnerAndName(this, #Method); \
     return GMOCK_MOCKER_(0, constness, Method).Invoke(); \
   } \
@@ -159,11 +163,12 @@ using internal::FunctionMocker;
 
 // INTERNAL IMPLEMENTATION - DON'T USE IN USER CODE!!!
 #define GMOCK_METHOD1_(tn, constness, ct, Method, ...) \
-  static_assert(1 == \
-      ::testing::internal::Function<__VA_ARGS__>::ArgumentCount, \
-      "MOCK_METHOD<N> must match argument count.");\
   GMOCK_RESULT_(tn, __VA_ARGS__) ct Method( \
       GMOCK_ARG_(tn, 1, __VA_ARGS__) gmock_a1) constness { \
+    GTEST_COMPILE_ASSERT_((::std::tuple_size<                          \
+        tn ::testing::internal::Function<__VA_ARGS__>::ArgumentTuple>::value \
+            == 1), \
+        this_method_does_not_take_1_argument); \
     GMOCK_MOCKER_(1, constness, Method).SetOwnerAndName(this, #Method); \
     return GMOCK_MOCKER_(1, constness, \
         Method).Invoke(::std::forward<GMOCK_ARG_(tn, 1, \
@@ -185,12 +190,13 @@ using internal::FunctionMocker;
 
 // INTERNAL IMPLEMENTATION - DON'T USE IN USER CODE!!!
 #define GMOCK_METHOD2_(tn, constness, ct, Method, ...) \
-  static_assert(2 == \
-      ::testing::internal::Function<__VA_ARGS__>::ArgumentCount, \
-      "MOCK_METHOD<N> must match argument count.");\
   GMOCK_RESULT_(tn, __VA_ARGS__) ct Method( \
       GMOCK_ARG_(tn, 1, __VA_ARGS__) gmock_a1, GMOCK_ARG_(tn, 2, \
           __VA_ARGS__) gmock_a2) constness { \
+    GTEST_COMPILE_ASSERT_((::std::tuple_size<                          \
+        tn ::testing::internal::Function<__VA_ARGS__>::ArgumentTuple>::value \
+            == 2), \
+        this_method_does_not_take_2_arguments); \
     GMOCK_MOCKER_(2, constness, Method).SetOwnerAndName(this, #Method); \
     return GMOCK_MOCKER_(2, constness, \
         Method).Invoke(::std::forward<GMOCK_ARG_(tn, 1, \
@@ -215,13 +221,14 @@ using internal::FunctionMocker;
 
 // INTERNAL IMPLEMENTATION - DON'T USE IN USER CODE!!!
 #define GMOCK_METHOD3_(tn, constness, ct, Method, ...) \
-  static_assert(3 == \
-      ::testing::internal::Function<__VA_ARGS__>::ArgumentCount, \
-      "MOCK_METHOD<N> must match argument count.");\
   GMOCK_RESULT_(tn, __VA_ARGS__) ct Method( \
       GMOCK_ARG_(tn, 1, __VA_ARGS__) gmock_a1, GMOCK_ARG_(tn, 2, \
           __VA_ARGS__) gmock_a2, GMOCK_ARG_(tn, 3, \
           __VA_ARGS__) gmock_a3) constness { \
+    GTEST_COMPILE_ASSERT_((::std::tuple_size<                          \
+        tn ::testing::internal::Function<__VA_ARGS__>::ArgumentTuple>::value \
+            == 3), \
+        this_method_does_not_take_3_arguments); \
     GMOCK_MOCKER_(3, constness, Method).SetOwnerAndName(this, #Method); \
     return GMOCK_MOCKER_(3, constness, \
         Method).Invoke(::std::forward<GMOCK_ARG_(tn, 1, \
@@ -250,13 +257,14 @@ using internal::FunctionMocker;
 
 // INTERNAL IMPLEMENTATION - DON'T USE IN USER CODE!!!
 #define GMOCK_METHOD4_(tn, constness, ct, Method, ...) \
-  static_assert(4 == \
-      ::testing::internal::Function<__VA_ARGS__>::ArgumentCount, \
-      "MOCK_METHOD<N> must match argument count.");\
   GMOCK_RESULT_(tn, __VA_ARGS__) ct Method( \
       GMOCK_ARG_(tn, 1, __VA_ARGS__) gmock_a1, GMOCK_ARG_(tn, 2, \
           __VA_ARGS__) gmock_a2, GMOCK_ARG_(tn, 3, __VA_ARGS__) gmock_a3, \
           GMOCK_ARG_(tn, 4, __VA_ARGS__) gmock_a4) constness { \
+    GTEST_COMPILE_ASSERT_((::std::tuple_size<                          \
+        tn ::testing::internal::Function<__VA_ARGS__>::ArgumentTuple>::value \
+            == 4), \
+        this_method_does_not_take_4_arguments); \
     GMOCK_MOCKER_(4, constness, Method).SetOwnerAndName(this, #Method); \
     return GMOCK_MOCKER_(4, constness, \
         Method).Invoke(::std::forward<GMOCK_ARG_(tn, 1, \
@@ -288,14 +296,15 @@ using internal::FunctionMocker;
 
 // INTERNAL IMPLEMENTATION - DON'T USE IN USER CODE!!!
 #define GMOCK_METHOD5_(tn, constness, ct, Method, ...) \
-  static_assert(5 == \
-      ::testing::internal::Function<__VA_ARGS__>::ArgumentCount, \
-      "MOCK_METHOD<N> must match argument count.");\
   GMOCK_RESULT_(tn, __VA_ARGS__) ct Method( \
       GMOCK_ARG_(tn, 1, __VA_ARGS__) gmock_a1, GMOCK_ARG_(tn, 2, \
           __VA_ARGS__) gmock_a2, GMOCK_ARG_(tn, 3, __VA_ARGS__) gmock_a3, \
           GMOCK_ARG_(tn, 4, __VA_ARGS__) gmock_a4, GMOCK_ARG_(tn, 5, \
           __VA_ARGS__) gmock_a5) constness { \
+    GTEST_COMPILE_ASSERT_((::std::tuple_size<                          \
+        tn ::testing::internal::Function<__VA_ARGS__>::ArgumentTuple>::value \
+            == 5), \
+        this_method_does_not_take_5_arguments); \
     GMOCK_MOCKER_(5, constness, Method).SetOwnerAndName(this, #Method); \
     return GMOCK_MOCKER_(5, constness, \
         Method).Invoke(::std::forward<GMOCK_ARG_(tn, 1, \
@@ -330,15 +339,16 @@ using internal::FunctionMocker;
 
 // INTERNAL IMPLEMENTATION - DON'T USE IN USER CODE!!!
 #define GMOCK_METHOD6_(tn, constness, ct, Method, ...) \
-  static_assert(6 == \
-      ::testing::internal::Function<__VA_ARGS__>::ArgumentCount, \
-      "MOCK_METHOD<N> must match argument count.");\
   GMOCK_RESULT_(tn, __VA_ARGS__) ct Method( \
       GMOCK_ARG_(tn, 1, __VA_ARGS__) gmock_a1, GMOCK_ARG_(tn, 2, \
           __VA_ARGS__) gmock_a2, GMOCK_ARG_(tn, 3, __VA_ARGS__) gmock_a3, \
           GMOCK_ARG_(tn, 4, __VA_ARGS__) gmock_a4, GMOCK_ARG_(tn, 5, \
           __VA_ARGS__) gmock_a5, GMOCK_ARG_(tn, 6, \
           __VA_ARGS__) gmock_a6) constness { \
+    GTEST_COMPILE_ASSERT_((::std::tuple_size<                          \
+        tn ::testing::internal::Function<__VA_ARGS__>::ArgumentTuple>::value \
+            == 6), \
+        this_method_does_not_take_6_arguments); \
     GMOCK_MOCKER_(6, constness, Method).SetOwnerAndName(this, #Method); \
     return GMOCK_MOCKER_(6, constness, \
         Method).Invoke(::std::forward<GMOCK_ARG_(tn, 1, \
@@ -376,15 +386,16 @@ using internal::FunctionMocker;
 
 // INTERNAL IMPLEMENTATION - DON'T USE IN USER CODE!!!
 #define GMOCK_METHOD7_(tn, constness, ct, Method, ...) \
-  static_assert(7 == \
-      ::testing::internal::Function<__VA_ARGS__>::ArgumentCount, \
-      "MOCK_METHOD<N> must match argument count.");\
   GMOCK_RESULT_(tn, __VA_ARGS__) ct Method( \
       GMOCK_ARG_(tn, 1, __VA_ARGS__) gmock_a1, GMOCK_ARG_(tn, 2, \
           __VA_ARGS__) gmock_a2, GMOCK_ARG_(tn, 3, __VA_ARGS__) gmock_a3, \
           GMOCK_ARG_(tn, 4, __VA_ARGS__) gmock_a4, GMOCK_ARG_(tn, 5, \
           __VA_ARGS__) gmock_a5, GMOCK_ARG_(tn, 6, __VA_ARGS__) gmock_a6, \
           GMOCK_ARG_(tn, 7, __VA_ARGS__) gmock_a7) constness { \
+    GTEST_COMPILE_ASSERT_((::std::tuple_size<                          \
+        tn ::testing::internal::Function<__VA_ARGS__>::ArgumentTuple>::value \
+            == 7), \
+        this_method_does_not_take_7_arguments); \
     GMOCK_MOCKER_(7, constness, Method).SetOwnerAndName(this, #Method); \
     return GMOCK_MOCKER_(7, constness, \
         Method).Invoke(::std::forward<GMOCK_ARG_(tn, 1, \
@@ -425,9 +436,6 @@ using internal::FunctionMocker;
 
 // INTERNAL IMPLEMENTATION - DON'T USE IN USER CODE!!!
 #define GMOCK_METHOD8_(tn, constness, ct, Method, ...) \
-  static_assert(8 == \
-      ::testing::internal::Function<__VA_ARGS__>::ArgumentCount, \
-      "MOCK_METHOD<N> must match argument count.");\
   GMOCK_RESULT_(tn, __VA_ARGS__) ct Method( \
       GMOCK_ARG_(tn, 1, __VA_ARGS__) gmock_a1, GMOCK_ARG_(tn, 2, \
           __VA_ARGS__) gmock_a2, GMOCK_ARG_(tn, 3, __VA_ARGS__) gmock_a3, \
@@ -435,6 +443,10 @@ using internal::FunctionMocker;
           __VA_ARGS__) gmock_a5, GMOCK_ARG_(tn, 6, __VA_ARGS__) gmock_a6, \
           GMOCK_ARG_(tn, 7, __VA_ARGS__) gmock_a7, GMOCK_ARG_(tn, 8, \
           __VA_ARGS__) gmock_a8) constness { \
+    GTEST_COMPILE_ASSERT_((::std::tuple_size<                          \
+        tn ::testing::internal::Function<__VA_ARGS__>::ArgumentTuple>::value \
+            == 8), \
+        this_method_does_not_take_8_arguments); \
     GMOCK_MOCKER_(8, constness, Method).SetOwnerAndName(this, #Method); \
     return GMOCK_MOCKER_(8, constness, \
         Method).Invoke(::std::forward<GMOCK_ARG_(tn, 1, \
@@ -478,9 +490,6 @@ using internal::FunctionMocker;
 
 // INTERNAL IMPLEMENTATION - DON'T USE IN USER CODE!!!
 #define GMOCK_METHOD9_(tn, constness, ct, Method, ...) \
-  static_assert(9 == \
-      ::testing::internal::Function<__VA_ARGS__>::ArgumentCount, \
-      "MOCK_METHOD<N> must match argument count.");\
   GMOCK_RESULT_(tn, __VA_ARGS__) ct Method( \
       GMOCK_ARG_(tn, 1, __VA_ARGS__) gmock_a1, GMOCK_ARG_(tn, 2, \
           __VA_ARGS__) gmock_a2, GMOCK_ARG_(tn, 3, __VA_ARGS__) gmock_a3, \
@@ -489,6 +498,10 @@ using internal::FunctionMocker;
           GMOCK_ARG_(tn, 7, __VA_ARGS__) gmock_a7, GMOCK_ARG_(tn, 8, \
           __VA_ARGS__) gmock_a8, GMOCK_ARG_(tn, 9, \
           __VA_ARGS__) gmock_a9) constness { \
+    GTEST_COMPILE_ASSERT_((::std::tuple_size<                          \
+        tn ::testing::internal::Function<__VA_ARGS__>::ArgumentTuple>::value \
+            == 9), \
+        this_method_does_not_take_9_arguments); \
     GMOCK_MOCKER_(9, constness, Method).SetOwnerAndName(this, #Method); \
     return GMOCK_MOCKER_(9, constness, \
         Method).Invoke(::std::forward<GMOCK_ARG_(tn, 1, \
@@ -536,9 +549,6 @@ using internal::FunctionMocker;
 
 // INTERNAL IMPLEMENTATION - DON'T USE IN USER CODE!!!
 #define GMOCK_METHOD10_(tn, constness, ct, Method, ...) \
-  static_assert(10 == \
-      ::testing::internal::Function<__VA_ARGS__>::ArgumentCount, \
-      "MOCK_METHOD<N> must match argument count.");\
   GMOCK_RESULT_(tn, __VA_ARGS__) ct Method( \
       GMOCK_ARG_(tn, 1, __VA_ARGS__) gmock_a1, GMOCK_ARG_(tn, 2, \
           __VA_ARGS__) gmock_a2, GMOCK_ARG_(tn, 3, __VA_ARGS__) gmock_a3, \
@@ -547,6 +557,10 @@ using internal::FunctionMocker;
           GMOCK_ARG_(tn, 7, __VA_ARGS__) gmock_a7, GMOCK_ARG_(tn, 8, \
           __VA_ARGS__) gmock_a8, GMOCK_ARG_(tn, 9, __VA_ARGS__) gmock_a9, \
           GMOCK_ARG_(tn, 10, __VA_ARGS__) gmock_a10) constness { \
+    GTEST_COMPILE_ASSERT_((::std::tuple_size<                          \
+        tn ::testing::internal::Function<__VA_ARGS__>::ArgumentTuple>::value \
+            == 10), \
+        this_method_does_not_take_10_arguments); \
     GMOCK_MOCKER_(10, constness, Method).SetOwnerAndName(this, #Method); \
     return GMOCK_MOCKER_(10, constness, \
         Method).Invoke(::std::forward<GMOCK_ARG_(tn, 1, \
