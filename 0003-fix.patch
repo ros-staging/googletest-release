@@ -1,0 +1,22 @@
+From d6c97ca121936d5001ab35d1483949581c4f25b4 Mon Sep 17 00:00:00 2001
+From: Stephen Breen <breen.machine@gmail.com>
+Date: Tue, 17 Nov 2020 15:15:18 -0500
+Subject: [PATCH 3/3] fix
+
+---
+ debian/changelog.em | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/debian/changelog.em b/debian/changelog.em
+index 6d52ea5..8d0bb2b 100644
+--- a/debian/changelog.em
++++ b/debian/changelog.em
+@@ -1,4 +1,4 @@
+-@[for change_version, change_date, changelog, main_name, main_email in changelogs]@(Package) (@(change_version)@(DebianInc)@(Distribution)) --endhook atredis); urgency=high
++@[for change_version, change_date, changelog, main_name, main_email in changelogs]@(Package) (@(change_version)@(DebianInc)@(Distribution)) --endhook atredis; urgency=high
+ 
+ @(changelog)
+ 
+-- 
+2.25.1
+
