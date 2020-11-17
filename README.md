@@ -1,3 +1,28 @@
+## googletest (eloquent) - 1.10.9000-1
+
+The packages in the `googletest` repository were released into the `eloquent` distro by running `/home/steven/osrf/bloom/.direnv/python-3.8.6/bin/bloom-release -r eloquent googletest --override-release-repository-url git@github.com:ros-staging/googletest-release` on `Tue, 17 Nov 2020 15:41:18 -0000`
+
+These packages were released:
+- `gmock_vendor`
+- `gtest_vendor`
+
+Version of package(s) in repository `googletest`:
+
+- upstream repository: https://github.com/ament/googletest.git
+- release repository: https://github.com/ros-staging/googletest-release.git
+- rosdistro version: `1.8.9000-1`
+- old version: `1.8.9000-1`
+- new version: `1.10.9000-1`
+
+Versions of tools used:
+
+- bloom version: `0.10.0`
+- catkin_pkg version: `0.4.23`
+- rosdep version: `0.19.0`
+- rosdistro version: `0.8.3`
+- vcstools version: `0.1.42`
+
+
 ## googletest (foxy) - 1.8.9000-1
 
 The packages in the `googletest` repository were released into the `foxy` distro by running `/usr/bin/bloom-release googletest -r foxy` on `Tue, 28 Jan 2020 17:28:13 -0000`
