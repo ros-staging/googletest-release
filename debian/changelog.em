@@ -6,8 +6,6 @@ Architecture: source
 Version: 1.8.9000-7bionic
 Distribution: bionic
 Urgency: high
-Maintainer: Dirk Thomas <dthomas\@osrfoundation.org>
-Changed-By: Dirk Thomas <dthomas\@osrfoundation.org>
 Description:
  ros-eloquent-gtest-vendor - The package provides GoogleTest.
 Changes:
