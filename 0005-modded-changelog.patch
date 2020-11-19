@@ -1,0 +1,27 @@
+From 99ddca8fd479a0492f91bbfc0868e74133f494f9 Mon Sep 17 00:00:00 2001
+From: Stephen Breen <breen.machine@gmail.com>
+Date: Thu, 19 Nov 2020 10:51:01 -0500
+Subject: [PATCH 5/6] modded changelog
+
+---
+ debian/changelog.em | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/debian/changelog.em b/debian/changelog.em
+index dccb5e8..a86f1cf 100644
+--- a/debian/changelog.em
++++ b/debian/changelog.em
+@@ -6,8 +6,8 @@ Architecture: source
+ Version: 1.8.9000-7bionic
+ Distribution: bionic
+ Urgency: high
+-Maintainer: Dirk Thomas <dthomas@osrfoundation.org>
+-Changed-By: Dirk Thomas <dthomas@osrfoundation.org>
++Maintainer: Dirk Thomas <dthomas\@osrfoundation.org>
++Changed-By: Dirk Thomas <dthomas\@osrfoundation.org>
+ Description:
+  ros-eloquent-gtest-vendor - The package provides GoogleTest.
+ Changes:
+-- 
+2.25.1
+

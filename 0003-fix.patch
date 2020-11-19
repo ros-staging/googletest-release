@@ -1,7 +1,7 @@
-From d6c97ca121936d5001ab35d1483949581c4f25b4 Mon Sep 17 00:00:00 2001
+From 5022f7bb553a6168986ad867d7e2c46afabe36c8 Mon Sep 17 00:00:00 2001
 From: Stephen Breen <breen.machine@gmail.com>
 Date: Tue, 17 Nov 2020 15:15:18 -0500
-Subject: [PATCH 3/3] fix
+Subject: [PATCH 3/6] fix
 
 ---
  debian/changelog.em | 2 +-

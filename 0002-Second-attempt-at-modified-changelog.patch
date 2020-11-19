@@ -1,7 +1,7 @@
-From b5908ddd426f341f4dad59d3a9c56eb8c0568ca0 Mon Sep 17 00:00:00 2001
+From c67b69d4930e98f32613afe877e1e958ca996884 Mon Sep 17 00:00:00 2001
 From: Stephen Breen <breen.machine@gmail.com>
 Date: Tue, 17 Nov 2020 15:09:00 -0500
-Subject: [PATCH 2/3] Second attempt at modified changelog
+Subject: [PATCH 2/6] Second attempt at modified changelog
 
 ---
  debian/changelog.em | 2 +-
